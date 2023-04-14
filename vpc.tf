@@ -8,3 +8,7 @@ resource "aws_vpc" "main" {
     Name = "${var.prefix}-vpc"
   }
 }
+
+output "vpc_id" {
+  value = aws_vpc.main.id
+}
