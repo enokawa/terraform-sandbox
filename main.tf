@@ -20,7 +20,8 @@ provider "aws" {
 
   default_tags {
     tags = {
-      CreatedBy = "Terraform"
+      ProjectName = var.prefix
+      CreatedBy   = "Terraform"
     }
   }
 }
