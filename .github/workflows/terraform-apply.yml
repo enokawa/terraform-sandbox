@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  terraform:
+  terraform-apply:
     runs-on: ubuntu-latest
     environment: develop
     timeout-minutes: 3
