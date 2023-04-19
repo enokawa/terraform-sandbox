@@ -1,12 +1,12 @@
-name: Terraform Apply
+name: Terraform Plan (develop)
 
 on:
   push:
     branches:
-      - main
+      - 'feature/**'
 
 jobs:
-  terraform-apply:
+  terraform-plan:
     runs-on: ubuntu-latest
     environment: develop
     timeout-minutes: 3
@@ -43,6 +43,3 @@ jobs:
 
       - name: Terraform Plan
         run: terraform plan -no-color
-      
-      - name: Terraform Apply
-        run: terraform apply -no-color -auto-approve
