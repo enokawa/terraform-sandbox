@@ -20,8 +20,8 @@ provider "aws" {
 
   default_tags {
     tags = {
-      ProjectName = local.prefix
       Environment = local.env
+      ProjectName = local.prefix
       CreatedBy   = "Terraform"
     }
   }
