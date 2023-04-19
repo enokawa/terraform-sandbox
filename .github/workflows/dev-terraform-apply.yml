@@ -41,8 +41,12 @@ jobs:
       - name: Terraform Validate
         run: terraform validate -no-color
 
-      - name: Terraform Plan
-        run: terraform plan -no-color
+      - name: Download plan file from S3
+        env:
+          TF_PLAN_S3_BUCKET_NAME: ${{ vars.TF_PLAN_S3_BUCKET_NAME }}
+          TF_PLAN_S3_OBJECT_PREFIX: ${{ vars.TF_PLAN_S3_OBJECT_PREFIX }}
+        run:
+          aws s3 cp s3://${TF_PLAN_S3_BUCKET_NAME}/${TF_PLAN_S3_OBJECT_PREFIX}/tfplan.binary tfplan.binary
       
       - name: Terraform Apply
-        run: terraform apply -no-color -auto-approve
+        run: terraform apply -no-color -input=false -auto-approve tfplan.binary
