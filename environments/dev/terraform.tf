@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
     bucket = "enokawa-terraform-sandbox-state"
-    key    = "terraform.tfstate"
+    key    = "aws/dev/terraform.tfstate"
     region = "ap-northeast-1"
   }
 
@@ -20,7 +20,8 @@ provider "aws" {
 
   default_tags {
     tags = {
-      ProjectName = var.prefix
+      Environment = local.env
+      ProjectName = local.prefix
       CreatedBy   = "Terraform"
     }
   }
