@@ -11,6 +11,11 @@ jobs:
     environment: develop
     timeout-minutes: 3
 
+    defaults:
+      run:
+        shell: bash
+        working-directory: ${{ env.TF_ACTIONS_WORKING_DIR }}
+
     permissions:
       contents: 'read'
       id-token: 'write'
