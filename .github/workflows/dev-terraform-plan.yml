@@ -40,6 +40,20 @@ jobs:
 
       - name: Terraform Validate
         run: terraform validate -no-color
+      
+      - name: Remove plan file
+        env:
+          TF_PLAN_S3_BUCKET_NAME: ${{ vars.TF_PLAN_S3_BUCKET_NAME }}
+          TF_PLAN_S3_OBJECT_PREFIX: ${{ vars.TF_PLAN_S3_OBJECT_PREFIX }}
+        run:
+          aws s3 rm s3://${TF_PLAN_S3_BUCKET_NAME}/${TF_PLAN_S3_OBJECT_PREFIX}/tfplan.binary
 
       - name: Terraform Plan
-        run: terraform plan -no-color
+        run: terraform plan -no-color -input=false -out tfplan.binary
+
+      - name: Upload plan file to S3
+        env:
+          TF_PLAN_S3_BUCKET_NAME: ${{ vars.TF_PLAN_S3_BUCKET_NAME }}
+          TF_PLAN_S3_OBJECT_PREFIX: ${{ vars.TF_PLAN_S3_OBJECT_PREFIX }}
+        run:
+          aws s3 cp tfplan.binary s3://${TF_PLAN_S3_BUCKET_NAME}/${TF_PLAN_S3_OBJECT_PREFIX}/tfplan.binary
