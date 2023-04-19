@@ -1,5 +1,5 @@
-resource "aws_vpc" "main" {
-  cidr_block           = "10.0.0.0/16"
+resource "aws_vpc" "vpc" {
+  cidr_block           = var.aws_vpc_cidr_block
   instance_tenancy     = "default"
   enable_dns_support   = true
   enable_dns_hostnames = true
@@ -9,14 +9,10 @@ resource "aws_vpc" "main" {
   }
 }
 
-resource "aws_internet_gateway" "gw" {
-  vpc_id = aws_vpc.main.id
+resource "aws_internet_gateway" "igw" {
+  vpc_id = aws_vpc.vpc.id
 
   tags = {
     Name = "${var.prefix}-igw"
   }
-}
-
-output "vpc_id" {
-  value = aws_vpc.main.id
 }

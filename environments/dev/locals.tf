@@ -1,7 +1,11 @@
+locals {
+  aws_vpc_cidr_block = "10.0.0.0/16"
+}
+
 terraform {
   backend "s3" {
     bucket = "enokawa-terraform-sandbox-state"
-    key    = "terraform.tfstate"
+    key    = "aws/dev/terraform.tfstate"
     region = "ap-northeast-1"
   }
 
@@ -20,7 +24,7 @@ provider "aws" {
 
   default_tags {
     tags = {
-      ProjectName = var.prefix
+      ProjectName = "sandbox"
       CreatedBy   = "Terraform"
     }
   }
