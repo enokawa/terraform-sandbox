@@ -56,6 +56,8 @@ jobs:
           aws s3 rm s3://${TF_PLAN_S3_BUCKET_NAME}/${TF_PLAN_S3_OBJECT_PREFIX}/tfplan.binary
 
       - name: Terraform Plan
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: tfcmt plan -- terraform plan -no-color -input=false -out tfplan.binary
 
       - name: Upload plan file to S3
