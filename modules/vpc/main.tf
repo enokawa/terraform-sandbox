@@ -27,3 +27,14 @@ resource "aws_subnet" "public_1" {
     Name = "${var.env}-${var.prefix}-public-1"
   }
 }
+
+resource "aws_subnet" "public_2" {
+  vpc_id                  = aws_vpc.vpc.id
+  cidr_block              = var.aws_subnet_cidr_block_public_2
+  availability_zone       = var.aws_subnet_az2
+  map_public_ip_on_launch = true
+
+  tags = {
+    Name = "${var.env}-${var.prefix}-public-2"
+  }
+}
