@@ -5,6 +5,11 @@ on:
     branches:
       - 'feature/**'
 
+env:
+  TF_PLAN_S3_BUCKET_NAME: ${{ vars.TF_PLAN_S3_BUCKET_NAME }}
+  TF_PLAN_S3_OBJECT_PREFIX: ${{ vars.TF_PLAN_S3_OBJECT_PREFIX }}
+  TFCMT_VERSION: 4.3.0
+
 jobs:
   terraform-plan:
     runs-on: ubuntu-latest
@@ -17,8 +22,9 @@ jobs:
         working-directory: ${{ vars.TF_ACTIONS_WORKING_DIR }}
 
     permissions:
-      contents: 'read'
-      id-token: 'write'
+      contents: read
+      id-token: write
+      pull-requests: write
 
     steps:
       - uses: actions/checkout@v3
@@ -32,6 +38,11 @@ jobs:
           role-to-assume: ${{ secrets.ROLE_TO_ASSUME }}
           aws-region: ${{ vars.AWS_REGION }}
 
+      - name: Setup tfcmt
+        run: |
+          curl -OL https://github.com/suzuki-shunsuke/tfcmt/releases/download/v${TFCMT_VERSION}/tfcmt_linux_amd64.tar.gz
+          tar xzf tfcmt_linux_amd64.tar.gz -C /usr/local/bin/
+
       - name: Terraform fmt
         run: terraform fmt
 
@@ -42,18 +53,14 @@ jobs:
         run: terraform validate -no-color
       
       - name: Remove plan file
-        env:
-          TF_PLAN_S3_BUCKET_NAME: ${{ vars.TF_PLAN_S3_BUCKET_NAME }}
-          TF_PLAN_S3_OBJECT_PREFIX: ${{ vars.TF_PLAN_S3_OBJECT_PREFIX }}
         run:
           aws s3 rm s3://${TF_PLAN_S3_BUCKET_NAME}/${TF_PLAN_S3_OBJECT_PREFIX}/tfplan.binary
 
       - name: Terraform Plan
-        run: terraform plan -no-color -input=false -out tfplan.binary
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: tfcmt plan -- terraform plan -no-color -input=false -out tfplan.binary
 
       - name: Upload plan file to S3
-        env:
-          TF_PLAN_S3_BUCKET_NAME: ${{ vars.TF_PLAN_S3_BUCKET_NAME }}
-          TF_PLAN_S3_OBJECT_PREFIX: ${{ vars.TF_PLAN_S3_OBJECT_PREFIX }}
         run:
           aws s3 cp tfplan.binary s3://${TF_PLAN_S3_BUCKET_NAME}/${TF_PLAN_S3_OBJECT_PREFIX}/tfplan.binary
