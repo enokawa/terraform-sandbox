@@ -1,9 +1,9 @@
 name: Terraform Plan (develop)
 
 on:
-  push:
+  pull_request:
     branches:
-      - 'feature/**'
+      - main
 
 env:
   TF_PLAN_S3_BUCKET_NAME: ${{ vars.TF_PLAN_S3_BUCKET_NAME }}
