@@ -51,4 +51,6 @@ jobs:
           aws s3 cp s3://${TF_PLAN_S3_BUCKET_NAME}/${TF_PLAN_S3_OBJECT_PREFIX}/tfplan.binary tfplan.binary
       
       - name: Terraform Apply
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: tfcmt apply -- terraform apply -no-color -input=false -auto-approve tfplan.binary
