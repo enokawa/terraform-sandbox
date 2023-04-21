@@ -45,3 +45,22 @@ resource "aws_security_group_rule" "ec2_bastion_egress_allow_all" {
   cidr_blocks       = ["0.0.0.0/0"]
   security_group_id = aws_security_group.ec2_bastion.id
 }
+
+resource "aws_security_group" "lambda_api" {
+  name        = "${var.env}-${var.prefix}-lambda-api-1"
+  description = ""
+  vpc_id      = var.vpc_id
+
+  tags = {
+    Name = "${var.env}-${var.prefix}-lambda-api-1"
+  }
+}
+
+resource "aws_security_group_rule" "lambda_api_egress_allow_all" {
+  type              = "egress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.lambda_api.id
+}
