@@ -13,5 +13,12 @@ module "vpc" {
   aws_subnet_cidr_block_private_2   = local.aws_subnet_cidr_block_private_2
   aws_subnet_az1                    = local.aws_subnet_az1
   aws_subnet_az2                    = local.aws_subnet_az2
+}
 
+module "vpc_secutiry_group" {
+  source = "../../modules/vpc_security_group"
+
+  env    = local.env
+  prefix = local.prefix
+  vpc_id = module.vpc.vpc_id
 }
