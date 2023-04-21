@@ -175,3 +175,33 @@ resource "aws_route_table" "private_1" {
     Name = "${var.env}-${var.prefix}-private-1"
   }
 }
+
+resource "aws_route_table_association" "public_1" {
+  subnet_id      = aws_subnet.public_1.id
+  route_table_id = aws_route_table.public_1.id
+}
+
+resource "aws_route_table_association" "public_2" {
+  subnet_id      = aws_subnet.public_2.id
+  route_table_id = aws_route_table.public_1.id
+}
+
+resource "aws_route_table_association" "protected_1" {
+  subnet_id      = aws_subnet.protected_1.id
+  route_table_id = aws_route_table.protected_1.id
+}
+
+resource "aws_route_table_association" "protected_2" {
+  subnet_id      = aws_subnet.protected_2.id
+  route_table_id = aws_route_table.protected_2.id
+}
+
+resource "aws_route_table_association" "private_1" {
+  subnet_id      = aws_subnet.private_1.id
+  route_table_id = aws_route_table.private_1.id
+}
+
+resource "aws_route_table_association" "private_2" {
+  subnet_id      = aws_subnet.private_2.id
+  route_table_id = aws_route_table.private_1.id
+}
