@@ -20,7 +20,7 @@ resource "aws_ec2_managed_prefix_list" "enokawa" {
 
 resource "aws_security_group" "ec2_bastion" {
   name        = "${var.env}-${var.prefix}-ec2-bastion-1"
-  description = ""
+  description = "${var.env}-${var.prefix}-ec2-bastion-1"
   vpc_id      = var.vpc_id
 
   tags = {
@@ -48,7 +48,7 @@ resource "aws_security_group_rule" "ec2_bastion_egress_allow_all" {
 
 resource "aws_security_group" "lambda_api" {
   name        = "${var.env}-${var.prefix}-lambda-api-1"
-  description = ""
+  description = "${var.env}-${var.prefix}-lambda-api-1"
   vpc_id      = var.vpc_id
 
   tags = {
@@ -67,7 +67,7 @@ resource "aws_security_group_rule" "lambda_api_egress_allow_all" {
 
 resource "aws_security_group" "rds" {
   name        = "${var.env}-${var.prefix}-rds-1"
-  description = ""
+  description = "${var.env}-${var.prefix}-rds-1"
   vpc_id      = var.vpc_id
 
   tags = {
