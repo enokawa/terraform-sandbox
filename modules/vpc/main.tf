@@ -83,6 +83,46 @@ resource "aws_subnet" "private_2" {
   }
 }
 
+# If you are using a NAT Gateway, use the following resources.
+# resource "aws_eip" "natgw_1_eip" {
+#   vpc = true
+
+#   tags = {
+#     Name = "${var.env}-${var.prefix}-natgw-eip-1"
+#   }
+# }
+
+# resource "aws_eip" "natgw_2_eip" {
+#   vpc = true
+
+#   tags = {
+#     Name = "${var.env}-${var.prefix}-natgw-eip-2"
+#   }
+# }
+
+# resource "aws_nat_gateway" "natgw_1" {
+#   allocation_id = aws_eip.natgw_1_eip.id
+#   subnet_id     = aws_subnet.public_1.id
+
+#   tags = {
+#     Name = "${var.env}-${var.prefix}-natgw-1"
+#   }
+
+#   depends_on = [aws_internet_gateway.igw]
+# }
+
+# resource "aws_nat_gateway" "natgw_2" {
+#   allocation_id = aws_eip.natgw_2_eip.id
+#   subnet_id     = aws_subnet.public_2.id
+
+#   tags = {
+#     Name = "${var.env}-${var.prefix}-natgw-2"
+#   }
+
+#   depends_on = [aws_internet_gateway.igw]
+# }
+
+
 resource "aws_route_table" "public_1" {
   vpc_id = aws_vpc.vpc.id
 
@@ -93,5 +133,45 @@ resource "aws_route_table" "public_1" {
 
   tags = {
     Name = "${var.env}-${var.prefix}-public-1"
+  }
+}
+
+resource "aws_route_table" "protected_1" {
+  vpc_id = aws_vpc.vpc.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.igw.id
+
+    # If you are using a NAT Gateway, use the following.
+    # nat_gateway_id = aws_nat_gateway.natgw_1.id
+  }
+
+  tags = {
+    Name = "${var.env}-${var.prefix}-protected-1"
+  }
+}
+
+resource "aws_route_table" "protected_2" {
+  vpc_id = aws_vpc.vpc.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.igw.id
+
+    # If you are using a NAT Gateway, use the following.
+    # nat_gateway_id = aws_nat_gateway.natgw_2.id
+  }
+
+  tags = {
+    Name = "${var.env}-${var.prefix}-protected-2"
+  }
+}
+
+resource "aws_route_table" "private_1" {
+  vpc_id = aws_vpc.vpc.id
+
+  tags = {
+    Name = "${var.env}-${var.prefix}-private-1"
   }
 }
