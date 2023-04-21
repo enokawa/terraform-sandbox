@@ -5,6 +5,7 @@ module "vpc" {
   aws_subnet_cidr_block_public_1    = local.aws_subnet_cidr_block_public_1
   aws_subnet_cidr_block_public_2    = local.aws_subnet_cidr_block_public_2
   aws_subnet_cidr_block_protected_1 = local.aws_subnet_cidr_block_protected_1
+  aws_subnet_cidr_block_protected_2 = local.aws_subnet_cidr_block_protected_2
   aws_subnet_az1                    = local.aws_subnet_az1
   aws_subnet_az2                    = local.aws_subnet_az2
   env                               = local.env

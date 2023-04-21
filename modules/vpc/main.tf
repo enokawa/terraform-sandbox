@@ -49,3 +49,14 @@ resource "aws_subnet" "protected_1" {
     Name = "${var.env}-${var.prefix}-protected-1"
   }
 }
+
+resource "aws_subnet" "protected_2" {
+  vpc_id                  = aws_vpc.vpc.id
+  cidr_block              = var.aws_subnet_cidr_block_protected_2
+  availability_zone       = var.aws_subnet_az2
+  map_public_ip_on_launch = false
+
+  tags = {
+    Name = "${var.env}-${var.prefix}-protected-2"
+  }
+}
