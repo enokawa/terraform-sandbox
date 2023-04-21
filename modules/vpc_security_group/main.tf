@@ -80,7 +80,6 @@ resource "aws_security_group_rule" "rds_ingress_allow_3306_from_ec2_bastion" {
   from_port                = 3306
   to_port                  = 3306
   protocol                 = "tcp"
-  cidr_blocks              = ["0.0.0.0/0"]
   source_security_group_id = aws_security_group.ec2_bastion.id
   security_group_id        = aws_security_group.rds.id
 }
@@ -90,7 +89,6 @@ resource "aws_security_group_rule" "rds_ingress_allow_3306_from_lambda_api" {
   from_port                = 3306
   to_port                  = 3306
   protocol                 = "tcp"
-  cidr_blocks              = ["0.0.0.0/0"]
   source_security_group_id = aws_security_group.lambda_api.id
   security_group_id        = aws_security_group.rds.id
 }
